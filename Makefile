@@ -1,18 +1,18 @@
 ifeq ($(OS),Windows_NT) # Windows
-	BUILD_DIR    = .\build
-	MILLW_PATH   = .\utils\millw
-	MKDIR_P_CMD  = -mkdir 2>NUL
-	RM_RF_CMD    = rmdir /s /q
+BUILD_DIR    = .\build
+MILLW_PATH   = .\utils\millw
+MKDIR_P_CMD  = -mkdir 2>NUL
+RM_RF_CMD    = rmdir /s /q
 else # Unix_like
-	BUILD_DIR    = ./build
-	MILLW_PATH   = ./utils/millw
-	MKDIR_P_CMD  = mkdir -p
-	RM_RF_CMD    = rm -rf
+BUILD_DIR    = ./build
+MILLW_PATH   = ./utils/millw
+MKDIR_P_CMD  = mkdir -p
+RM_RF_CMD    = rm -rf
 endif
 
 export PATH := $(PATH):$(abspath ./utils)
 
-default: verilog
+default: test
 
 test:
 	$(MILLW_PATH) -i __.test

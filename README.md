@@ -8,14 +8,18 @@
 
 ## 依赖
 
-- `Scala` 2.13
+- `Scala` 2.13.10
 - `GNU make`
 
 其他所需的工具已自带：
-- `firtool`：
-  Win/Linux/macOS二进制文件已自带，开箱即用
+
+- 来自`llvm/CIRCT`的`firtool`：
+  
+    Win/Linux/macOS二进制文件已自带，开箱即用
+
 - 构建系统`mill`：
-  已自带`millw`，可自动联网下载mill，首次使用需网络畅通
+  
+    已自带`millw`，可自动联网下载mill，首次使用需网络畅通
 
 
 ## 使用方式

@@ -1,3 +1,4 @@
+import openmips._
 import chisel3.stage._
 import circt.stage.{CIRCTTarget, CIRCTTargetAnnotation}
 import circt.stage
@@ -6,7 +7,7 @@ object Elaborate extends App {
   val useMFC    = true // use MLIR-based firrtl compiler
   val generator = Seq(chisel3.stage.ChiselGeneratorAnnotation(() => top))
 
-  def top = new GCD()
+  def top = new Cpu()
 
   if (useMFC) {
     (new stage.ChiselStage)

@@ -7,3 +7,5 @@
 /.bloop/
 /.metals/
 /.vscode/
+/.bsp/
+/.idea/
