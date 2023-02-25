@@ -2,10 +2,11 @@ package openmips.module
 
 import chisel3._
 import chisel3.util._
-import openmips.Params
-import openmips.Params.Global.zeroWord
-import openmips.Utils.getBits
-import openmips.bundle.{IdExPort, IfIdPort, RegfileRead}
+
+import _root_.openmips.Params
+import _root_.openmips.Params.Global.zeroWord
+import _root_.openmips.Utils.getBits
+import _root_.openmips.bundle.{IdExPort, IfIdPort, RegfileRead}
 
 class Id extends Module {
   val io = IO(new Bundle {

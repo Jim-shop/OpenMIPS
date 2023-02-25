@@ -2,14 +2,17 @@ package openmips
 
 import chisel3.{Mem => _, _}
 
-import openmips.Params
-import openmips.module._
-import openmips.bridge._
-import openmips.bundle.{RomRead}
+import module._
+import bridge._
+import bundle.{RegfileRead, RomRead}
 
 class Cpu extends Module {
   val io = IO(new Bundle {
     val romRead = Flipped(new RomRead)
+    val debugPort = Output(new Bundle {
+      val ifInst = UInt(Params.Global.Width.instBus)
+      val wb     = UInt(Params.Global.Width.instBus)
+    })
   })
 
   val pc = Module(new Pc)
@@ -45,4 +48,7 @@ class Cpu extends Module {
     dst.addr := src.addr
     src.data := dst.data
   }
+
+  io.debugPort.ifInst := ifToId.io.in.inst
+  io.debugPort.wb     := regfile.io.write.data
 }

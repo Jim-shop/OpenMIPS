@@ -1,4 +1,4 @@
-
+package openmips.test.module
 
 import chisel3._
 import chiseltest._

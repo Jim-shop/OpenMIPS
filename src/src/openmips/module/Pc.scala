@@ -1,8 +1,9 @@
 package openmips.module
 
 import chisel3._
-import openmips.Params
-import openmips.Params.Global.zeroWord
+
+import _root_.openmips.Params
+import _root_.openmips.Params.Global.zeroWord
 
 class Pc extends Module {
   val io = IO(new Bundle {

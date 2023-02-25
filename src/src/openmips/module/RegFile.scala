@@ -2,9 +2,9 @@ package openmips.module
 
 import chisel3._
 
-import openmips.Params
-import openmips.Params.Global.zeroWord
-import openmips.bundle.{RegfileRead, RegfileWrite}
+import _root_.openmips.Params
+import _root_.openmips.Params.Global.zeroWord
+import _root_.openmips.bundle.{RegfileRead, RegfileWrite}
 
 class Regfile extends Module {
   val io = IO(new Bundle {
