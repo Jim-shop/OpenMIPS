@@ -8,8 +8,8 @@ object Elaborate extends App {
   val useMFC    = true // use MLIR-based firrtl compiler
   val generator = Seq(chisel3.stage.ChiselGeneratorAnnotation(() => top))
 
-  // def top = new Sopc(memoryFile="./src/test/rom/ori.data", debug=false)
-  def top = new Cpu
+  def top = new Rom(memoryFile=raw"C:\Users\Jim\Desktop\OpenMIPS\src\test\rom\ori.data")
+  // def top = new Cpu
 
   if (useMFC) {
     (new stage.ChiselStage)
