@@ -12,6 +12,9 @@ export PATH := $(PATH):$(abspath ./utils)
 
 default: test
 
+mars:
+	java -jar ./utils/Mars.jar
+
 test:
 	millw -i __.test
 
@@ -37,4 +40,4 @@ checkformat:
 clean:
 	-$(RM_RF_CMD) $(BUILD_DIR) out test_run_dir
 
-.PHONY: default test verilog help compile bsp reformat checkformat clean
+.PHONY: default mars test verilog help compile bsp reformat checkformat clean

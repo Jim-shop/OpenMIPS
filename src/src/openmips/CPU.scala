@@ -31,12 +31,14 @@ class Cpu extends Module {
 
   val ex = Module(new Ex)
   ex.io.idExPort := idToEx.io.out
+  id.io.exRegWrite := ex.io.regWrite
 
   val exToMem = Module(new ExToMem)
   exToMem.io.in := ex.io.regWrite
 
   val mem = Module(new Mem)
   mem.io.in := exToMem.io.out
+  id.io.memRegWrite := mem.io.out
 
   val memToWb = Module(new MemToWb)
   memToWb.io.in := mem.io.out

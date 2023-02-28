@@ -5,7 +5,7 @@ import circt.stage.{CIRCTTarget, CIRCTTargetAnnotation}
 import circt.stage
 
 object Elaborate extends App {
-  val useMFC    = true // use MLIR-based firrtl compiler
+  val useMFC    = false // use MLIR-based firrtl compiler
   val generator = Seq(chisel3.stage.ChiselGeneratorAnnotation(() => top))
 
   def top = new Rom(memoryFile=raw"C:\Users\Jim\Desktop\OpenMIPS\src\test\rom\ori.data")

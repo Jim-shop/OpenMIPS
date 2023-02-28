@@ -3,16 +3,18 @@ package openmips.module
 import chisel3._
 import chisel3.util._
 
-import _root_.openmips.Params
-import _root_.openmips.Params.Global.zeroWord
-import _root_.openmips.Utils.getBits
-import _root_.openmips.bundle.{IdExPort, IfIdPort, RegfileRead}
+import openmips.Params
+import openmips.Params.Global.zeroWord
+import openmips.Utils.getBits
+import openmips.bundle.{IdExPort, IfIdPort, RegfileRead, RegfileWrite}
 
 class Id extends Module {
   val io = IO(new Bundle {
-    val ifIdPort = Input(new IfIdPort)
-    val regReads = Vec(Params.Regfile.readPortNum, Flipped(new RegfileRead))
-    val idExPort = Output(new IdExPort)
+    val ifIdPort    = Input(new IfIdPort)
+    val regReads    = Vec(Params.Regfile.readPortNum, Flipped(new RegfileRead))
+    val idExPort    = Output(new IdExPort)
+    val exRegWrite  = Input(new RegfileWrite)
+    val memRegWrite = Input(new RegfileWrite)
   })
 
   // parse inst
@@ -57,7 +59,13 @@ class Id extends Module {
 
   for ((regOut, regRead) <- io.idExPort.regVal.zip(io.regReads)) {
     when(regRead.en) {
-      regOut := regRead.data
+      when((io.exRegWrite.en) && (regRead.addr === io.exRegWrite.addr)) {
+        regOut := io.exRegWrite.data
+      }.elsewhen ((io.memRegWrite.en) && (regRead.addr === io.memRegWrite.addr)) {
+        regOut := io.memRegWrite.data
+      }.otherwise {
+        regOut := regRead.data
+      }
     }.otherwise {
       regOut := imm
     }
