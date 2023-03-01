@@ -13,7 +13,7 @@ export PATH := $(PATH):$(abspath ./utils)
 default: test
 
 mars:
-	java -jar ./utils/Mars.jar
+	java -jar ./utils/Mars.jar &
 
 test:
 	millw -i __.test

@@ -12,6 +12,7 @@ class Cpu extends Module {
     val debugPort = Output(new Bundle {
       val ifInst = UInt(Params.Global.Width.instBus)
       val wb     = UInt(Params.Global.Width.instBus)
+      val pc     = UInt(Params.Global.Width.instBus)
     })
   })
 
@@ -30,14 +31,14 @@ class Cpu extends Module {
   idToEx.io.in := id.io.idExPort
 
   val ex = Module(new Ex)
-  ex.io.idExPort := idToEx.io.out
+  ex.io.idExPort   := idToEx.io.out
   id.io.exRegWrite := ex.io.regWrite
 
   val exToMem = Module(new ExToMem)
   exToMem.io.in := ex.io.regWrite
 
   val mem = Module(new Mem)
-  mem.io.in := exToMem.io.out
+  mem.io.in         := exToMem.io.out
   id.io.memRegWrite := mem.io.out
 
   val memToWb = Module(new MemToWb)
@@ -53,4 +54,5 @@ class Cpu extends Module {
 
   io.debugPort.ifInst := ifToId.io.in.inst
   io.debugPort.wb     := regfile.io.write.data
+  io.debugPort.pc     := pc.io.pc
 }
