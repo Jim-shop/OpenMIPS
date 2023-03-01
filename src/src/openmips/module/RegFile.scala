@@ -12,7 +12,7 @@ class Regfile extends Module {
     val reads = Vec(Params.Regfile.readPortNum, new RegfileRead)
   })
 
-  val regs: Vec[UInt] = RegInit(VecInit(Seq.fill(Params.Regfile.num)(zeroWord)))
+  val regs = RegInit(VecInit(Seq.fill(Params.Regfile.num)(zeroWord)))
 
   when(io.write.en && io.write.addr =/= Params.Regfile.nopAddr) {
     regs(io.write.addr) := io.write.data
@@ -30,4 +30,6 @@ class Regfile extends Module {
     }
   }
 
+  val debug = IO(Output(Vec(Params.Regfile.num, UInt(Params.Regfile.Width.data))))
+  debug := regs
 }

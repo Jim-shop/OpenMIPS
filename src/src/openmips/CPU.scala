@@ -45,16 +45,18 @@ class Cpu extends Module {
 
   val debug = IO(
     new Bundle {
-      val pc_val         = chiselTypeOf(pc.io.pc)
-      val ifInst_val     = chiselTypeOf(ifToId.io.out.inst)
-      val aluOp_val      = chiselTypeOf(idToEx.io.out.aluOp)
-      val aluSel_val     = chiselTypeOf(idToEx.io.out.aluSel)
-      val wb_val         = chiselTypeOf(regfile.io.write.data)
+      val pc_val     = chiselTypeOf(pc.io.pc)
+      val ifInst_val = chiselTypeOf(ifToId.io.out.inst)
+      val aluOp_val  = chiselTypeOf(idToEx.io.out.aluOp)
+      val aluSel_val = chiselTypeOf(idToEx.io.out.aluSel)
+      val wb_val     = chiselTypeOf(regfile.io.write.data)
+      val reg        = Output(Vec(Params.Regfile.num, UInt(Params.Regfile.Width.data)))
     }
   )
-  debug.pc_val         := pc.io.pc
-  debug.ifInst_val     := ifToId.io.in.inst
-  debug.aluOp_val      := idToEx.io.out.aluOp
-  debug.aluSel_val     := idToEx.io.out.aluSel
-  debug.wb_val         := regfile.io.write.data
+  debug.pc_val     := pc.io.pc
+  debug.ifInst_val := ifToId.io.in.inst
+  debug.aluOp_val  := idToEx.io.out.aluOp
+  debug.aluSel_val := idToEx.io.out.aluSel
+  debug.wb_val     := regfile.io.write.data
+  debug.reg        := regfile.debug
 }
