@@ -13,11 +13,21 @@ object CpuSpec extends ChiselUtestTester {
   val tests = Tests {
     def runOnCpu(cpu: Cpu, insts: Seq[String]) = {
       for (i <- 0 until insts.length) {
-        val inst = insts(cpu.io.debugPort.pc.peekInt().toInt)
+        val inst = insts(cpu.debug.pc_val.peekInt().toInt)
         cpu.io.romRead.data.poke(inst.U)
         cpu.clock.step()
-        val out = cpu.io.debugPort.wb.peekInt().toString(16)
-        println(s"[Cycle ${i}] Emit: ${inst} Read: ${out}")
+        println(s"[Cycle ${i}] Emit: ${inst}")
+        Seq(
+          "pc" -> cpu.debug.pc_val,
+          "ifInst" -> cpu.debug.ifInst_val,
+          "aluOp" -> cpu.debug.aluOp_val,
+          "aluSel" -> cpu.debug.aluSel_val,
+          "wb" -> cpu.debug.wb_val,
+        ).map {
+          case (name, port) =>
+            val out = port.peekInt().toString(16)
+            println(s"${name}: ${out}")
+        }
       }
     }
     test("ori") {

@@ -61,7 +61,7 @@ class Id extends Module {
     when(regRead.en) {
       when((io.exRegWrite.en) && (regRead.addr === io.exRegWrite.addr)) {
         regOut := io.exRegWrite.data
-      }.elsewhen ((io.memRegWrite.en) && (regRead.addr === io.memRegWrite.addr)) {
+      }.elsewhen((io.memRegWrite.en) && (regRead.addr === io.memRegWrite.addr)) {
         regOut := io.memRegWrite.data
       }.otherwise {
         regOut := regRead.data
@@ -70,5 +70,4 @@ class Id extends Module {
       regOut := imm
     }
   }
-
 }

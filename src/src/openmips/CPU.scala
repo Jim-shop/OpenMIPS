@@ -9,11 +9,6 @@ import bundle.{RegfileRead, RomRead}
 class Cpu extends Module {
   val io = IO(new Bundle {
     val romRead = Flipped(new RomRead)
-    val debugPort = Output(new Bundle {
-      val ifInst = UInt(Params.Global.Width.instBus)
-      val wb     = UInt(Params.Global.Width.instBus)
-      val pc     = UInt(Params.Global.Width.instBus)
-    })
   })
 
   val pc = Module(new Pc)
@@ -25,34 +20,41 @@ class Cpu extends Module {
   ifToId.io.in.inst := io.romRead.data
 
   val id = Module(new Id)
-  id.io.ifIdPort := ifToId.io.out
+  id.io.ifIdPort <> ifToId.io.out
 
   val idToEx = Module(new IdToEx)
-  idToEx.io.in := id.io.idExPort
+  idToEx.io.in <> id.io.idExPort
 
   val ex = Module(new Ex)
-  ex.io.idExPort   := idToEx.io.out
-  id.io.exRegWrite := ex.io.regWrite
+  ex.io.idExPort <> idToEx.io.out
+  id.io.exRegWrite <> ex.io.regWrite
 
   val exToMem = Module(new ExToMem)
-  exToMem.io.in := ex.io.regWrite
+  exToMem.io.in <> ex.io.regWrite
 
   val mem = Module(new Mem)
-  mem.io.in         := exToMem.io.out
-  id.io.memRegWrite := mem.io.out
+  mem.io.in <> exToMem.io.out
+  id.io.memRegWrite <> mem.io.out
 
   val memToWb = Module(new MemToWb)
-  memToWb.io.in := mem.io.out
+  memToWb.io.in <> mem.io.out
 
   val regfile = Module(new Regfile)
-  regfile.io.write := memToWb.io.out
-  for ((src, dst) <- id.io.regReads.zip(regfile.io.reads)) {
-    dst.en   := src.en
-    dst.addr := src.addr
-    src.data := dst.data
-  }
+  regfile.io.write <> memToWb.io.out
+  id.io.regReads <> regfile.io.reads
 
-  io.debugPort.ifInst := ifToId.io.in.inst
-  io.debugPort.wb     := regfile.io.write.data
-  io.debugPort.pc     := pc.io.pc
+  val debug = IO(
+    new Bundle {
+      val pc_val         = chiselTypeOf(pc.io.pc)
+      val ifInst_val     = chiselTypeOf(ifToId.io.out.inst)
+      val aluOp_val      = chiselTypeOf(idToEx.io.out.aluOp)
+      val aluSel_val     = chiselTypeOf(idToEx.io.out.aluSel)
+      val wb_val         = chiselTypeOf(regfile.io.write.data)
+    }
+  )
+  debug.pc_val         := pc.io.pc
+  debug.ifInst_val     := ifToId.io.in.inst
+  debug.aluOp_val      := idToEx.io.out.aluOp
+  debug.aluSel_val     := idToEx.io.out.aluSel
+  debug.wb_val         := regfile.io.write.data
 }

@@ -39,7 +39,7 @@ package object openmips {
       }
 
       final object Ops {
-        final val ori = "b001100".U(Width.Atom.op)
+        final val ori = "b001101".U(Width.Atom.op)
         final val nop = "b000000".U(Width.Atom.op)
       }
     }

@@ -15,7 +15,7 @@ object IdSpec extends ChiselUtestTester {
   val tests = Tests {
     test("ori") {
       testCircuit(new Id) { id =>
-        val op       = "001100"
+        val op       = "001101"
         val reg0data = 1234.U(Params.Global.Width.instBus)
         val reg1data = 888.U(Params.Global.Width.instBus)
         for {
